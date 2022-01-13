@@ -20,7 +20,7 @@ const GithubProvider = ({ children }) => {
    const [error, setError] = useState({ show: false, msg: '' });
 
    const searchGithubUser = async user => {
-      toggleError();
+      toggleError(); // pa resetear, xsi busco despues de obtener un error
       setIsLoading(true);
 
       const response = await axios(`${rootUrl}/users/${user}`).catch(err =>
@@ -32,7 +32,7 @@ const GithubProvider = ({ children }) => {
          const { followers_url, login } = response.data;
 
          //🔰 para desplegar toda la info de una
-         // las respuestas del object q devuelve tiene el orden en q pongo los reqs ( primero la de las repos ), por eso lo puedo destructurar de esta forma
+         // las respuestas del object q devuelve tiene el orden en q pongo los reqs ( primero la de las repos ), por eso lo puedo destructurar de esta forma. ( devuelve un array con las respuesta en el orden en q se ponen las reqs, en este caso 1ro las repos y 2do los followers , xeso destructuro en el array primero repos y despues followers )
          await Promise.allSettled([
             axios(`${rootUrl}/users/${login}/repos?per_page=100`),
             axios(`${followers_url}?per_page=100`),
@@ -74,7 +74,7 @@ const GithubProvider = ({ children }) => {
          .catch(err => console.log(err));
    };
 
-   // los valores default son pa poder llamarla y resetear todo mas facil
+   // ⭐ los valores default son pa poder llamarla y resetear todo mas facil
    const toggleError = (show = false, msg = '') => {
       setError({ show, msg });
    };
